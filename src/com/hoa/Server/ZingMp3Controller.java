@@ -1,10 +1,12 @@
 package com.hoa.Server;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 
 import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import com.hoa.encrypt.mh;
 
@@ -24,14 +26,15 @@ public class ZingMp3Controller {
 		CTIME = cTIME;
 		api = new ZingMp3Api(vERSION, uRL, sECRET_KEY, aPI_KEY, cTIME);
 	}
-	public String getSong(String id) {
+	public String getSong(String id) throws IOException, ParseException, InterruptedException {
 		String sig = api.getParam("/api/v2/song/get/streaming", id);
-		String url = "/api/v2/song/get/streaming?id="+id+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+SECRET_KEY;
+		String url = "https://zingmp3.vn/api/v2/song/get/streaming?id="+id+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+API_KEY;
+		System.out.println(url);
 		return api.callAPI(url);
 	}
-	public String getSongInfo(String id) {
+	public String getSongInfo(String id) throws IOException, ParseException, InterruptedException {
 		String sig = api.getParam("/api/v2/song/get/info", id);
-		String url =  "/api/v2/song/get/info?id="+id+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+SECRET_KEY;
+		String url = URL+"/api/v2/song/get/info?id="+id+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+API_KEY;
 		return api.callAPI(url);
 	}
 	public String getDetailPlayList(String playlistId) {

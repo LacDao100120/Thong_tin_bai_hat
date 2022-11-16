@@ -4,16 +4,41 @@
  */
 package com.hoa.Server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.hoa.encrypt.mh;
 
 
@@ -27,7 +52,7 @@ public class ZingMp3Api {
   public String SECRET_KEY;
   public String API_KEY;
   public String CTIME;
-
+  private static final String USER_AGENT = "Mozilla/5.0";
     public ZingMp3Api(String VERSION, String URL, String SECRET_KEY, String API_KEY, String CTIME) {
     	
         this.VERSION = VERSION;
@@ -79,10 +104,11 @@ public class ZingMp3Api {
     public String callAPI(String url) {
     	
 		try {
-			Connection.Response response = Jsoup.connect("https://zingmp3.vn"+url)
+			Connection.Response response = Jsoup.connect(url)
+					.userAgent("Mozilla")
 					.ignoreContentType(true)
-					.method(Connection.Method.GET)
 					.execute();
+			
 			return response.body();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -90,6 +116,32 @@ public class ZingMp3Api {
 		}
     	return null;
     			
+    }
+    
+ public String callAPI2(String url) throws IOException, ParseException, InterruptedException {
+//	 HttpClient client = HttpClient.newHttpClient();
+//	 HttpRequest request = HttpRequest.newBuilder()
+//			 .GET()
+//			 .header("content-type", "application/json;charset=utf-8")
+//			 .uri(URI.create(url))
+//			 .build();
+//	 HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+//	 JSONObject result= new JSONObject(response.body()); 
+//	// String res = new String(response.body().toString().getBytes(),StandardCharsets.UTF_8);
+//	 //System.out.println(result);
+//	 JSONArray byt = (JSONArray) result.get("bytes");
+//	 byte[] t = new byte[byt.length()];
+//	 for(int i = 0;i<byt.length();i++) {
+//		  t[i] = (byte)(((int)byt.get(i)) & 0xFF);
+//	 }
+//	 
+//	 System.out.println(new String(t, StandardCharsets.UTF_8));
+	 HttpGet request = new HttpGet(url);
+	 CloseableHttpClient client = HttpClients.createDefault();
+	 CloseableHttpResponse response = client.execute(request);
+	 HttpEntity entity = response.getEntity();
+	 String result = EntityUtils.toString(entity);
+     return result;			
     }
 public String getParam(String path,String id) {
 		
