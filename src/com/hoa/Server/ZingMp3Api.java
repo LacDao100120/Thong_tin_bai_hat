@@ -12,8 +12,11 @@ import java.io.Reader;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.util.Base64;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -101,10 +104,30 @@ public class ZingMp3Api {
     public void setCTIME(String CTIME) {
         this.CTIME = CTIME;
     }
+ public String getCookie() {
+    	
+		try {
+			//Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.61.76.22", 8888));
+			Connection.Response response = Jsoup.connect(URL)
+					.userAgent("Mozilla")
+					.ignoreContentType(true)
+					.execute();
+			
+			return response.cookie("zmp3_rqid");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+ 	}
     public String callAPI(String url) {
     	
 		try {
+			//Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.61.76.22", 8888));
 			Connection.Response response = Jsoup.connect(url)
+					.cookie("zmp3_rqid", getCookie())
+					.header("content-type", "application/json;charset=utf-8")
+					.header("Accept", "application/json")
 					.userAgent("Mozilla")
 					.ignoreContentType(true)
 					.execute();
@@ -118,35 +141,11 @@ public class ZingMp3Api {
     			
     }
     
- public String callAPI2(String url) throws IOException, ParseException, InterruptedException {
-//	 HttpClient client = HttpClient.newHttpClient();
-//	 HttpRequest request = HttpRequest.newBuilder()
-//			 .GET()
-//			 .header("content-type", "application/json;charset=utf-8")
-//			 .uri(URI.create(url))
-//			 .build();
-//	 HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//	 JSONObject result= new JSONObject(response.body()); 
-//	// String res = new String(response.body().toString().getBytes(),StandardCharsets.UTF_8);
-//	 //System.out.println(result);
-//	 JSONArray byt = (JSONArray) result.get("bytes");
-//	 byte[] t = new byte[byt.length()];
-//	 for(int i = 0;i<byt.length();i++) {
-//		  t[i] = (byte)(((int)byt.get(i)) & 0xFF);
-//	 }
-//	 
-//	 System.out.println(new String(t, StandardCharsets.UTF_8));
-	 HttpGet request = new HttpGet(url);
-	 CloseableHttpClient client = HttpClients.createDefault();
-	 CloseableHttpResponse response = client.execute(request);
-	 HttpEntity entity = response.getEntity();
-	 String result = EntityUtils.toString(entity);
-     return result;			
-    }
 public String getParam(String path,String id) {
 		
 		try {
-			String hashMac = !id.equals(null) || !id.equals("")?mh.getHMAC512(path+mh.getSHA256("ctime="+CTIME+"id="+id+"version="+VERSION), SECRET_KEY):mh.getHMAC512(path+mh.getSHA256("ctime="+CTIME+"version="+VERSION), SECRET_KEY);
+			String hashMac = "";
+			hashMac =  id != null ?mh.getHMAC512(path+mh.getSHA256("ctime="+CTIME+"id="+id+"version="+VERSION), SECRET_KEY):mh.getHMAC512(path+mh.getSHA256("ctime="+CTIME+"version="+VERSION), SECRET_KEY);
 			return hashMac;
 		} catch (InvalidKeyException | SignatureException | NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
@@ -154,17 +153,6 @@ public String getParam(String path,String id) {
 		}
 		return null;
 	}
-public String getParam2(String path,String id) {
-	
-	try {
-		String hashMac = !id.equals(null) || !id.equals("")?mh.getHMAC512(path+mh.getSHA256("ctime="+CTIME+"id="+id), SECRET_KEY):mh.getHMAC512(path+mh.getSHA256("ctime="+CTIME+"version="+VERSION), SECRET_KEY);
-		return hashMac;
-	} catch (InvalidKeyException | SignatureException | NoSuchAlgorithmException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return null;
-}
 	public String getParamHome(String path) {
 		try {
 			return mh.getHMAC512(path+mh.getSHA256("count=30"+"ctime="+CTIME+"page=1"+"version="+VERSION), SECRET_KEY);
@@ -182,7 +170,34 @@ public String getParam2(String path,String id) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public String getSong(String id) throws IOException, ParseException, InterruptedException {
+		String sig = getParam("/api/v2/song/get/streaming", id);
+		String url = URL+"/api/v2/song/get/streaming?id="+id+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+API_KEY;
+		return callAPI(url);
+	}
+	public String getPlaylist(String id) {
+		String sig = getParam("/api/v2/song/get/streaming", id);
+		String url = URL+"/api/v2/song/get/streaming?id="+id+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+API_KEY;
+		return callAPI(url);
 	} 
+	
+	public String getSongInfo(String id) throws IOException, ParseException, InterruptedException {
+		String sig = getParam("/api/v2/song/get/info", id);
+		String url = URL+"/api/v2/song/get/info?id="+id+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+API_KEY;
+		return callAPI(url);
+	}
+	public String getTop100() {
+		String sig = getParam("/api/v2/page/get/top-100", null);
+		String url = URL+"/api/v2/page/get/top-100?"+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+API_KEY;
+		return callAPI(url);
+	}
+	public String search(String keyword) {
+		String sig = getParam("/api/v2/search/multi", null);
+		String url = URL+"/api/v2/search/multi?q="+keyword+"&ctime="+CTIME+"&version="+VERSION+"&sig="+sig+"&apiKey="+API_KEY;
+		return callAPI(url);
+	}
+
 	 class homeRequest {
 			public String page;
 			public String segmentId;

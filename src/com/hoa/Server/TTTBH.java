@@ -22,6 +22,6 @@ public class TTTBH {
         Double d = time/1000.0;
         String time2 = String.format ("%.0f", Math.floor(d));
         ZingMp3Controller controller= new ZingMp3Controller("1.7.63", "https://zingmp3.vn", key, "X5BM3w8N7MKozC0B85o4KMlzLZKhV00y", time2);
-        System.out.println(controller.getSong("Z60EO89D"));
+        System.out.println(controller.getSong("Z60EO89D").getTitle());
     }
 }
