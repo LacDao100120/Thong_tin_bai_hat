@@ -1,9 +1,11 @@
 package com.raven.component;
 
+import com.raven.main.MP3Player;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -12,19 +14,26 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javax.sound.sampled.*;
+
 
 import com.raven.main.Main;
 import com.raven.model.Song;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
+import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 
 public class Bottom extends javax.swing.JPanel {
 	public static InputStream songStream;
 	public static Player player;
 	public Socket socket;
 	public static Thread th = new Thread();
+	 public static Timer t;
+        public static MP3Player mp3Player=new MP3Player();
     public Bottom() {
         initComponents();
         setOpaque(false);
@@ -32,30 +41,8 @@ public class Bottom extends javax.swing.JPanel {
     }
     public static int time = 0;
     public static boolean isPlay = false;
-    public static void ToggleMusic() throws JavaLayerException {
-    	if(isPlay) {
-    		
-    		time = player.getPosition();
-    		System.out.println(time + ":"+isPlay);
-    		isPlay = true;
-    		th.stop();
-    	}
-    	else {
-    		
-    		th.stop();
-    		isPlay = false;
-    		th = new Thread() {
-    			
-				public void run() {
-					try {
-						Player play = Bottom.player;
-						play.play(time);
-					}
-					catch(JavaLayerException v ){System.out.println(v);}
-				}
-			};
-			th.start();
-    	}
+    public static void ToggleMusic() {
+    	mp3Player.close();
     }
     public static InputStream getSongStream() {
 		return songStream;
@@ -65,45 +52,38 @@ public class Bottom extends javax.swing.JPanel {
 	}
 	public static void playMusic(Song song) {
     	
-    	try {
-    		if(player != null) {
-    			player.close();
-    		}
-    		th.stop();
+    
+    		
     		String validLink = Main.controller.getSong(song.getId());
-    		 validLink = validLink.replace("\\","");
-			URI uri = new URI(validLink);
-			URLConnection urlConnection = new URL(validLink).openConnection();
-			setSongStream(urlConnection.getInputStream());
-			isPlay = true;
-			
-			th = new Thread((new Runnable() {
-				private InputStream stream;
-				public Runnable init(InputStream im) {
-					this.stream = im;
-					return this;
-				}
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					try {
-						Player plays = Bottom.player;
-						//System.out.println(Botoom.getInputStream());
-						plays = new  Player(this.stream);
-						Bottom.player = plays;
-						plays.play();
+                Play.lyric = Main.controller.getLyric(song.getId());
+                Play.lyric.setArtist(song.getArtistsNames());
+                Play.lyric.setSong(song.getTitle());
+	    		 validLink = validLink.replace("\\","");
+	    		 mp3Player.setMp3FileToPlay(validLink);
+                mp3Player.play();
+                slider1.setMaximum(Integer.parseInt(song.getDuration()));
+                jLabel2.setText(Integer.parseInt(song.getDuration())/60+":"+(Integer.parseInt(song.getDuration()) - (Integer.parseInt(song.getDuration())/60)*60);
+                if(t != null) {
+                	t.cancel();
+                	t= null;
+                }
+                t = new Timer();
+                t.schedule(new TimerTask() {
+					
+					@Override
+					public void run() {
+						
+						// TODO Auto-generated method stub
+						slider1.setValue(slider1.getValue()+1);
+						jLabel1.setText(slider1.getValue()+"");
 					}
-					catch(JavaLayerException v){System.out.println(v);}
-				}
-			}).init(urlConnection.getInputStream()));	
-			 th.start();
+				}, 100);
+                
+                isPlay = true;
+			
 			
 
-		} catch (URISyntaxException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-    }
+    } 
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -118,7 +98,7 @@ public class Bottom extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
 
         slider1.setMaximum(200);
-        slider1.setValue(60);
+        slider1.setValue(0);
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -192,9 +172,9 @@ public class Bottom extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private static javax.swing.JLabel jLabel1;
+    private static javax.swing.JLabel jLabel2;
     private com.raven.component.Play play1;
-    private com.raven.swing.Slider slider1;
+    private static com.raven.swing.Slider slider1;
     // End of variables declaration//GEN-END:variables
 }

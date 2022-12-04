@@ -3,10 +3,20 @@ package com.raven.component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+
+import com.raven.model.Lyric;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.JPanel;
+
 import javazoom.jl.decoder.JavaLayerException;
 
 public class Play extends javax.swing.JPanel {
-
+	public static Lyric lyric;
     public Play() {
         initComponents();
     }
@@ -35,12 +45,7 @@ public class Play extends javax.swing.JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					Bottom.ToggleMusic();
-				} catch (JavaLayerException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Bottom.ToggleMusic();
 				
 			}
 		});
@@ -52,7 +57,27 @@ public class Play extends javax.swing.JPanel {
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/play.png"))); // NOI18N
         jButton4.setContentAreaFilled(false);
         jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        
+        jButton4.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame frame = new JFrame();
+				lyric lyric = new lyric();
+				ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/Untitled.png"));
+				ImagePanel panel11 = new ImagePanel(icon.getImage());
+				lyric.setOpaque(false);
+				
+				lyric.add(panel11);
+				lyric.setBackground(Color.black);
+				lyric.setUpLyric(Play.lyric);
+				frame.setBackground(Color.black);
+				frame.add(lyric);
+				
+				frame.pack();
+				frame.setVisible(true);
+				
+			}
+		});
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -77,7 +102,32 @@ public class Play extends javax.swing.JPanel {
             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+public class ImagePanel extends JPanel
+{
+private static final long serialVersionUID = 1L;
+private Image image = null;
+private int iWidth2;
+private int iHeight2;
 
+public ImagePanel(Image image)
+{
+    this.image = image;
+    this.iWidth2 = image.getWidth(this)/2;
+    this.iHeight2 = image.getHeight(this)/2;
+}
+
+@Override
+public void paintComponent(Graphics g)
+{
+    super.paintComponent(g);
+    if (image != null)
+    {
+        int x = this.getParent().getWidth()/2 - iWidth2;
+        int y = this.getParent().getHeight()/2 - iHeight2;
+        g.drawImage(image,x,y,this);
+    }
+}
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

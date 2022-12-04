@@ -96,7 +96,7 @@ public class Main extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
+       // setUndecorated(true);
 
         panel1.setBackground(new java.awt.Color(255, 255, 255));
 

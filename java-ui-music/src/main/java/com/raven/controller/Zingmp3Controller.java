@@ -27,6 +27,7 @@ import org.json.simple.parser.ParseException;
 import com.google.gson.Gson;
 import com.raven.cipher.AES;
 import com.raven.cipher.RSA;
+import com.raven.model.Lyric;
 import com.raven.model.Song;
 
  
@@ -134,6 +135,34 @@ public class Zingmp3Controller {
 					Song[] songs = gson.fromJson(line, Song[].class);
 					
 					return new ArrayList<Song>(Arrays.asList(songs));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error while get connect stream");
+			
+			} 
+           
+         } 
+    	
+		return null;
+    }
+    public Lyric getLyric(String id){
+        Utilities.getPipeLine(socket, out, in);
+    	if (socket != null && socket.isConnected()) {
+            try {
+				out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+				 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				 SecretKey key = Utilities.getAes().generatorKey();
+				// Utilities.setSecretKey(key);
+				// String text = Utilities.encrypt(key,"newRelease");
+				 //secretKey = Utilities.getSecretKey();
+				 System.out.println(id);
+				 Utilities.Reply("lyric;"+id,out);
+			     String line = "";   
+				 line = in.readLine();
+					Gson gson = new Gson();
+					Lyric lyric = gson.fromJson(line, Lyric.class);
+					
+					return lyric;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				System.out.println("error while get connect stream");
