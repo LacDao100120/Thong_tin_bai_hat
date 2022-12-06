@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.raven.model.Lyric;
 
@@ -61,21 +62,25 @@ public class Play extends javax.swing.JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame frame = new JFrame();
-				lyric lyric = new lyric();
-				ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/Untitled.png"));
-				ImagePanel panel11 = new ImagePanel(icon.getImage());
-				lyric.setOpaque(false);
-				
-				lyric.add(panel11);
-				lyric.setBackground(Color.black);
-				lyric.setUpLyric(Play.lyric);
-				frame.setBackground(Color.black);
-				frame.add(lyric);
-				
-				frame.pack();
-				frame.setVisible(true);
-				
+				if(lyric != null) {
+					JFrame frame = new JFrame();
+					lyric lyric = new lyric();
+					ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/Untitled.png"));
+					ImagePanel panel11 = new ImagePanel(icon.getImage());
+					lyric.setOpaque(false);
+					
+					lyric.add(panel11);
+					lyric.setBackground(Color.black);
+					lyric.setUpLyric(Play.lyric);
+					frame.setBackground(Color.black);
+					frame.add(lyric);
+					
+					frame.pack();
+					frame.setVisible(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Hiện chưa có lời cho bài hát này!!!");
+				}
 			}
 		});
         

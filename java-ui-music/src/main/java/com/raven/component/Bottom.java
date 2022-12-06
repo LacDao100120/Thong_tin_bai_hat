@@ -55,8 +55,11 @@ public class Bottom extends javax.swing.JPanel {
     	
     		String validLink = Main.controller.getSong(song.getId());
                 Play.lyric = Main.controller.getLyric(song.getId());
-                Play.lyric.setArtist(song.getArtistsNames() != null?song.getArtistsNames():SearchArtist.artist.getName());
-                Play.lyric.setSong(song.getTitle());
+                if(Play.lyric != null){
+                     Play.lyric.setArtist(song.getArtistsNames() != null?song.getArtistsNames():SearchArtist.artist.getName());
+                     Play.lyric.setSong(song.getTitle());
+                    }
+               
 	    		 validLink = validLink.replace("\\","");
 	    		 //slider1.setValue(0);
 	    		// slider1.setMaximum(Integer.parseInt(song.getDuration()));

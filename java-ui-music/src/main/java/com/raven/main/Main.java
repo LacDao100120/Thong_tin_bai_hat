@@ -27,18 +27,20 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         init();
         artists.setSongs(controller.getInfo("newRelease"));
+        menuClicked(artists);
      //  news.setSongs(controller.getInfo("aumy"));
+        
     }
     JPanel panel;
     private void init() {
         //JScrollPane sc = new JScrollPane(new JScrollBar());
         JPanel panel = new JPanel();
-        
+        //albums.setVisible(true);
         panel.add(albums);
         panel.add(search);
         panel.add(artists);
+        panel.setVisible(true);
         //sc.add(panel);
-        menuClicked(artists);
         panel.setBounds(268, 0, 980, 1000);
         getContentPane().add(panel);
         //setBackground(new Color(0, 0, 0, 0));  //  Remove background color  
@@ -51,13 +53,13 @@ public class Main extends javax.swing.JFrame {
 //        list2.addItem(new Model_Menu("Browse", "browse"));
         
         
-        menuClicked(artists);
+       
     }
-    public void menuClicked(JPanel panel){
+    public void menuClicked(JPanel jpanel){
     	albums.setVisible(false);
     	search.setVisible(false);
     	artists.setVisible(false);
-        panel.setVisible(true);
+    	jpanel.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -98,7 +100,7 @@ public class Main extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
+       
 
         panel1.setBackground(new java.awt.Color(255, 255, 255));
 

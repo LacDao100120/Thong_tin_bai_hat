@@ -31,7 +31,7 @@ public class Music extends javax.swing.JPanel {
         	 if(song.getTitle() !=null) {
         		 i++;
                  
-                 this.list.addItem(new Model_Music(String.valueOf(i), song.getTitle()+"( "+song.getArtistsNames() + ")", song.getDuration()));
+                 this.list.addItem(new Model_Music(String.valueOf(i), song.getTitle()+"( "+song.getArtistsNames() + ")", Integer.parseInt(song.getDuration())/60+":"+(Integer.parseInt(song.getDuration()) - (Integer.parseInt(song.getDuration())/60)*60)));
         	 }
             
         }

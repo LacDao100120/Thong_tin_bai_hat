@@ -24,7 +24,6 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="music1" min="-2" pref="527" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="221" max="-2" attributes="0"/>
@@ -62,9 +61,7 @@
               <Component id="jLabel4" min="-2" pref="117" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" pref="35" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-              <Component id="music1" min="-2" pref="282" max="-2" attributes="0"/>
-              <EmptySpace pref="25" max="32767" attributes="0"/>
+              <EmptySpace pref="341" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -80,8 +77,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="#T&#xec;m Ki&#x1ebf;m"/>
       </Properties>
-    </Component>
-    <Component class="com.raven.component.Music" name="music1">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>

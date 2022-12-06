@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class SearchArtist extends javax.swing.JPanel {
     ArrayList<Song> songs = new ArrayList<>();
@@ -110,11 +111,12 @@ public class SearchArtist extends javax.swing.JPanel {
         jLabel5.setText("Tên Ca Sĩ:");
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setBorder(null);
+        jScrollPane1.setBorder(null); 
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setText("jLabel7");
         jLabel7.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(jLabel7);
 
         jLabel6.setText("Tiểu sử");
@@ -196,8 +198,8 @@ public class SearchArtist extends javax.swing.JPanel {
                         String keyword = jTextField1.getText();
                         keyword = Zingmp3Controller.deAccent(keyword);
                         ArrayList<Song> songs = Main.controller.searchSong(keyword);
-                        artist = Main.controller.getArtistInfo(keyword);
                         music1.getSongs(songs);
+                        artist = Main.controller.getArtistInfo(keyword);
                         Artist art = new Artist();
                         int i = 0;
                         for(Song s:songs) {
@@ -207,46 +209,51 @@ public class SearchArtist extends javax.swing.JPanel {
                             }
                             i++;
                     }
-                        artist.setName(art.getName());
-                     
-                    //jLabel2.setText(art.getName());
-                  
-                    setImg(art.getThumnail());
-                    String temp="<html>";
-                    String temp2 = "<html>";
-                        if(!artist.getContent().equals("")){
-                        	String[] splits = artist.getContent().split(" ");
-                        	int ins = 0; 
-                        	for(String ia:splits) {
-                        		if(ins <8) {
-                        			temp2+=ia+" ";
-                        		}else {
-                        			temp2+="\n";
-                        			ins=0;
-                        		}
-                        		ins++;
-                        	}
-                        	temp2+="</html>";
-                        	temp2 = temp2.replace("\n", "<br />");
-                        	jLabel7.setVisible(true);
-                            jLabel7.setText(temp2);
-                              jScrollPane1.setVisible(true);
-                              jLabel6.setVisible(true);
+                        if(artist != null) {
+                        	artist.setName(art.getName());
+                            
+                            //jLabel2.setText(art.getName());
+                          
+                            setImg(artist.getThumnail());
+                            String temp="<html>";
+                            String temp2 = "<html>";
+                                if(!artist.getContent().equals("")){
+                                	String[] splits = artist.getContent().split(" ");
+                                	int ins = 0; 
+                                	for(String ia:splits) {
+                                		if(ins <8) {
+                                			temp2+=ia+" ";
+                                		}else {
+                                			temp2+="\n";
+                                			ins=0;
+                                		}
+                                		ins++;
+                                	}
+                                	temp2+="</html>";
+                                	temp2 = temp2.replace("\n", "<br />");
+                                	jLabel7.setVisible(true);
+                                    jLabel7.setText(temp2);
+                                      jScrollPane1.setVisible(true);
+                                      jLabel6.setVisible(true);
+                                }
+                                if(!artist.getRealname().equals("")){
+                                	temp+= artist.getRealname()+" \n";
+                                	temp+= artist.getBirthday()+" \n";
+                                	temp+= artist.getNational()+" \n";
+                                	temp+= "</html>";
+                                	temp = temp.replace("\n", "<br />");
+                                    jLabel2.setText(temp);
+                                    jLabel2.setVisible(true);
+                                }
+                             
+                        }else {
+                        	JOptionPane.showMessageDialog(null, "Tên Ca sĩ sai hoặc không tồn tại");
                         }
-                        if(!artist.getRealname().equals("")){
-                        	temp+= artist.getRealname()+" \n";
-                        	temp+= artist.getBirthday()+" \n";
-                        	temp+= artist.getNational()+" \n";
-                        	temp+= "</html>";
-                        	temp = temp.replace("\n", "<br />");
-                            jLabel2.setText(temp);
-                            jLabel2.setVisible(true);
-                        }
-                     
+                        
                      
                 }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+ 
     public Artist getArtist() {
 		return artist;
 	}
@@ -257,7 +264,7 @@ public class SearchArtist extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel2; 
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

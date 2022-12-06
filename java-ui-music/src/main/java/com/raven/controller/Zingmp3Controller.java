@@ -164,10 +164,16 @@ public class Zingmp3Controller {
 				 Utilities.Reply("lyric;"+id,out);
 			     String line = "";   
 				 line = in.readLine();
-					Gson gson = new Gson();
-					Lyric lyric = gson.fromJson(line, Lyric.class);
+                                 if(!line.equals("")){
+                                     Gson gson = new Gson();
+                                     Lyric lyric = gson.fromJson(line, Lyric.class);
+                                     return lyric;
+                                 }else{
+                                     return null;
+                                 }
 					
-					return lyric;
+					
+					
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				System.out.println("error while get connect stream");
@@ -191,10 +197,15 @@ public class Zingmp3Controller {
 				 Utilities.Reply("author;"+word,out);
 			     String line = "";   
 				 line = in.readLine();
-					Gson gson = new Gson();
+                                 if(!line.equals("")){
+                                     Gson gson = new Gson();
 					Artist artist = gson.fromJson(line, Artist.class);
 					
 					return artist;
+                                 }else{
+                                     return null;
+                                 }
+					
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				System.out.println("error while get connect stream");
