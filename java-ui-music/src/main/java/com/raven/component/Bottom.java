@@ -1,5 +1,6 @@
 package com.raven.component;
 
+import com.raven.form.SearchArtist;
 import com.raven.main.MP3Player;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -52,33 +53,32 @@ public class Bottom extends javax.swing.JPanel {
 	}
 	public static void playMusic(Song song) {
     	
-    
-    		
     		String validLink = Main.controller.getSong(song.getId());
                 Play.lyric = Main.controller.getLyric(song.getId());
-                Play.lyric.setArtist(song.getArtistsNames());
+                Play.lyric.setArtist(song.getArtistsNames() != null?song.getArtistsNames():SearchArtist.artist.getName());
                 Play.lyric.setSong(song.getTitle());
 	    		 validLink = validLink.replace("\\","");
+	    		 //slider1.setValue(0);
+	    		// slider1.setMaximum(Integer.parseInt(song.getDuration()));
+	                jLabel2.setText(Integer.parseInt(song.getDuration())/60+":"+(Integer.parseInt(song.getDuration()) - (Integer.parseInt(song.getDuration())/60)*60));
+	                if(t != null) {
+	                	t.cancel();
+	                	t= null;
+	                }
+	                t = new Timer();
+	                t.schedule(new TimerTask() {
+						
+						@Override
+						public void run() {
+							
+							// TODO Auto-generated method stub
+							//slider1.setValue(slider1.getValue()+1);
+							//jLabel1.setText(slider1.getValue()+"");
+						}
+					}, 100);
+	                
 	    		 mp3Player.setMp3FileToPlay(validLink);
                 mp3Player.play();
-                slider1.setMaximum(Integer.parseInt(song.getDuration()));
-                jLabel2.setText(Integer.parseInt(song.getDuration())/60+":"+(Integer.parseInt(song.getDuration()) - (Integer.parseInt(song.getDuration())/60)*60);
-                if(t != null) {
-                	t.cancel();
-                	t= null;
-                }
-                t = new Timer();
-                t.schedule(new TimerTask() {
-					
-					@Override
-					public void run() {
-						
-						// TODO Auto-generated method stub
-						slider1.setValue(slider1.getValue()+1);
-						jLabel1.setText(slider1.getValue()+"");
-					}
-				}, 100);
-                
                 isPlay = true;
 			
 			
@@ -175,6 +175,6 @@ public class Bottom extends javax.swing.JPanel {
     private static javax.swing.JLabel jLabel1;
     private static javax.swing.JLabel jLabel2;
     private com.raven.component.Play play1;
-    private static com.raven.swing.Slider slider1;
+    private com.raven.swing.Slider slider1;
     // End of variables declaration//GEN-END:variables
 }

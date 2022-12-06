@@ -6,7 +6,36 @@ public class Artist {
 	private String link;
 	private String thumnail;
 	private String playlistId;
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getNational() {
+		return national;
+	}
+	public void setNational(String national) {
+		this.national = national;
+	}
+	public String getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	public String getRealname() {
+		return realname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
 	private String totalFollow;
+	private String content;
+	private String national;
+	private String birthday;
+	private String realname;
+
 	public Artist() {
 		
 	}

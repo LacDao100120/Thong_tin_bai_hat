@@ -156,6 +156,7 @@ public class AlbumSongs extends javax.swing.JPanel {
                
     			if(!jTextField1.getText().equals("")){
                     String keyword = jTextField1.getText();
+                    keyword = Zingmp3Controller.deAccent(keyword);
                     ArrayList<Song> songs = Main.controller.searchSong(keyword);
                     music1.getSongs(songs);
                     Artist art = new Artist();

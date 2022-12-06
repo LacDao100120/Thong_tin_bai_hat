@@ -5,6 +5,7 @@ import com.raven.model.Model_Menu;
 import com.raven.swing.ScrollBar;
 
 import com.raven.form.Form_Artists;
+import com.raven.form.SearchArtist;
 import com.raven.form.AlbumSongs;
 import com.raven.form.New_Release;
 import java.awt.BorderLayout;
@@ -19,13 +20,14 @@ import javax.swing.JScrollPane;
 public class Main extends javax.swing.JFrame {
     public static Zingmp3Controller controller = new Zingmp3Controller("localhost", 5000);
 	 AlbumSongs albums = new AlbumSongs();
-     New_Release news = new New_Release();
+     //New_Release news = new New_Release();
      Form_Artists artists = new Form_Artists();
+     SearchArtist search = new SearchArtist();
     public Main() {
         initComponents();
         init();
         artists.setSongs(controller.getInfo("newRelease"));
-        news.setSongs(controller.getInfo("aumy"));
+     //  news.setSongs(controller.getInfo("aumy"));
     }
     JPanel panel;
     private void init() {
@@ -33,7 +35,7 @@ public class Main extends javax.swing.JFrame {
         JPanel panel = new JPanel();
         
         panel.add(albums);
-        panel.add(news);
+        panel.add(search);
         panel.add(artists);
         //sc.add(panel);
         menuClicked(artists);
@@ -42,7 +44,7 @@ public class Main extends javax.swing.JFrame {
         //setBackground(new Color(0, 0, 0, 0));  //  Remove background color  
         list1.addItem(new Model_Menu("Nổi bật", "artists"));
         list1.addItem(new Model_Menu("Tìm Kiếm", "albums"));
-        list1.addItem(new Model_Menu("Nhạc Âu Mỹ", "song"));
+        list1.addItem(new Model_Menu("Ca Sĩ", "song"));
 //        list2.addItem(new Model_Menu("Store", "store"));
 //        list2.addItem(new Model_Menu("Radio", "radio"));
 //        list2.addItem(new Model_Menu("For You", "love"));
@@ -53,7 +55,7 @@ public class Main extends javax.swing.JFrame {
     }
     public void menuClicked(JPanel panel){
     	albums.setVisible(false);
-    	news.setVisible(false);
+    	search.setVisible(false);
     	artists.setVisible(false);
         panel.setVisible(true);
     }
@@ -72,7 +74,7 @@ public class Main extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         panelMoving = new javax.swing.JPanel();
         bottom1 = new com.raven.component.Bottom();
-
+        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -96,7 +98,7 @@ public class Main extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-       // setUndecorated(true);
+        setUndecorated(true);
 
         panel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -181,7 +183,7 @@ public class Main extends javax.swing.JFrame {
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
                 .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(931, Short.MAX_VALUE))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,22 +193,22 @@ public class Main extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bottom1, javax.swing.GroupLayout.DEFAULT_SIZE, 1187, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bottom1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(bottom1, javax.swing.GroupLayout.DEFAULT_SIZE, 1187, Short.MAX_VALUE)
+                    .addContainerGap())
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(bottom1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap())
+            );
 
         pack();
         setLocationRelativeTo(null);
@@ -235,7 +237,7 @@ public class Main extends javax.swing.JFrame {
             menuClicked(albums);
         }
         if(index == 2){
-            menuClicked(news);
+            menuClicked(search);
         }
 
     }//GEN-LAST:event_list1MousePressed
@@ -297,7 +299,6 @@ public class Main extends javax.swing.JFrame {
 //        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.component.Bottom bottom1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -307,5 +308,6 @@ public class Main extends javax.swing.JFrame {
     private com.raven.component.Menu menu1;
     private com.raven.swing.Panel panel1;
     private javax.swing.JPanel panelMoving;
+    private com.raven.component.Bottom bottom1;
     // End of variables declaration//GEN-END:variables
 }
