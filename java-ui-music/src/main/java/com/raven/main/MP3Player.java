@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javazoom.jl.player.Player;
+import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 
 
 public class MP3Player
@@ -19,64 +20,67 @@ public class MP3Player
     MyThread th;
     private String mp3FileToPlay;
     private boolean isPlay = false;
-    private Thread thread;
+    private int stopTime = 0;
     public String getMp3FileToPlay() {
         return mp3FileToPlay;
+    }
+
+    public int getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(int stopTime) {
+        this.stopTime = stopTime;
     }
 
     public void setMp3FileToPlay(String mp3FileToPlay) {
         this.mp3FileToPlay = mp3FileToPlay;
     }
-    private Player jlPlayer;
+    private AudioPlayerComponent audio;
     public MP3Player() {
+        this.audio = new AudioPlayerComponent();
     }
     public MP3Player(String mp3FileToPlay) {
+        this.audio = new AudioPlayerComponent();
         this.mp3FileToPlay = mp3FileToPlay;
     }
-
+    public void loadAudio(String path) {
+         this.audio.mediaPlayer().media().startPaused(path);
+         this.setStopTime(0);
+      }
     public void play() {
-        try {
-           // URI uri = new URI(mp3FileToPlay); 
-             URLConnection urlConnection = new URL(mp3FileToPlay).openConnection();
-            BufferedInputStream fileInputStream = new BufferedInputStream(urlConnection.getInputStream());
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-            jlPlayer = new Player(bufferedInputStream);
-           
-        } catch (Exception e) {
-            System.out.println("Problem playing mp3 file " + mp3FileToPlay);
-            System.out.println(e.getMessage());
+        this.setStopTime(this.audio.mediaPlayer().audio().track());
+        if(stopTime > 0){
+            this.audio.mediaPlayer().controls().setPosition(stopTime);
+            this.audio.mediaPlayer().controls().play();
+        }else{
+            this.audio.mediaPlayer().controls().setPosition(0);
+            this.audio.mediaPlayer().controls().play();
         }
-        if(thread != null){
-            System.out.println("here");
-            Bottom.time = th!=null? th.stopping():0;
-            thread.stop();
-        }
-        MyThread th = new MyThread(jlPlayer);
-        thread = new Thread(th);
-        thread.start();
+         
         
     }
-    
-    public void close() {
-        if (jlPlayer != null) jlPlayer.close();
+    public void pause(){
+        this.audio.mediaPlayer().audio().track();
+        this.audio.mediaPlayer().controls().pause();
     }
     class MyThread implements Runnable{
         //public static int stopTime = 0;
          private volatile boolean stopped = false;
-        public Player player;
+        public AudioPlayerComponent audio;
         public void stop() {
         stopped = true;
         }
-        public MyThread(Player player){
-            this.player = player;
+        public MyThread(AudioPlayerComponent audio){
+            this.audio = audio;
         }
         @Override
         public void run() {
                 try {
-                    this.player.play();
-                    if(stopped){
-                        this.player.close();
-                    }
+                    
+//                    if(stopped){
+//                        this.player.close();
+//                    }
                     
                 } catch (Exception e) {
                     System.out.println(e.getMessage());

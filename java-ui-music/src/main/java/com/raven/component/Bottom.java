@@ -20,6 +20,10 @@ import java.net.URLConnection;
 import com.raven.main.Main;
 import com.raven.model.Song;
 
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -27,6 +31,7 @@ import java.util.logging.Logger;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
+import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 
 public class Bottom extends javax.swing.JPanel {
 	public static InputStream songStream;
@@ -40,10 +45,16 @@ public class Bottom extends javax.swing.JPanel {
         setOpaque(false);
         setBackground(new Color(68, 68, 68));
     }
+    public static String currentID= "";
     public static int time = 0;
     public static boolean isPlay = false;
     public static void ToggleMusic() {
-    	mp3Player.close();
+    	if(!isPlay){
+            mp3Player.play();
+        }else{
+            mp3Player.pause();
+        }
+        
     }
     public static InputStream getSongStream() {
 		return songStream;
@@ -52,37 +63,44 @@ public class Bottom extends javax.swing.JPanel {
 		Bottom.songStream = songStream;
 	}
 	public static void playMusic(Song song) {
-    	
-    		String validLink = Main.controller.getSong(song.getId());
+                if(!currentID.equals(song)){
+                    String validLink = Main.controller.getSong(song.getId());
                 Play.lyric = Main.controller.getLyric(song.getId());
                 if(Play.lyric != null){
                      Play.lyric.setArtist(song.getArtistsNames() != null?song.getArtistsNames():SearchArtist.artist.getName());
                      Play.lyric.setSong(song.getTitle());
                     }
-               
-	    		 validLink = validLink.replace("\\","");
-	    		 //slider1.setValue(0);
-	    		// slider1.setMaximum(Integer.parseInt(song.getDuration()));
-	                jLabel2.setText(Integer.parseInt(song.getDuration())/60+":"+(Integer.parseInt(song.getDuration()) - (Integer.parseInt(song.getDuration())/60)*60));
-	                if(t != null) {
-	                	t.cancel();
-	                	t= null;
-	                }
-	                t = new Timer();
-	                t.schedule(new TimerTask() {
-						
-						@Override
-						public void run() {
-							
-							// TODO Auto-generated method stub
-							//slider1.setValue(slider1.getValue()+1);
-							//jLabel1.setText(slider1.getValue()+"");
-						}
-					}, 100);
-	                
-	    		 mp3Player.setMp3FileToPlay(validLink);
-                mp3Player.play();
-                isPlay = true;
+               if(validLink != null) {
+            	   validLink = validLink.replace("\\","");
+  	    		 //slider1.setValue(0);
+  	    		// slider1.setMaximum(Integer.parseInt(song.getDuration()));
+  	                jLabel2.setText(Integer.parseInt(song.getDuration())/60+":"+(Integer.parseInt(song.getDuration()) - (Integer.parseInt(song.getDuration())/60)*60));
+  	                if(t != null) {
+  	                	t.cancel();
+  	                	t= null;
+  	                }
+  	                t = new Timer();
+  	                t.schedule(new TimerTask() {
+  						
+  						@Override
+  						public void run() {
+  							
+  							// TODO Auto-generated method stub
+  							//slider1.setValue(slider1.getValue()+1);
+  							//jLabel1.setText(slider1.getValue()+"");
+  						}
+  					}, 100);
+  	            mp3Player.setMp3FileToPlay(validLink);
+                    mp3Player.loadAudio(validLink);
+                    mp3Player.play();
+                }
+               else{
+                   
+               }
+  	    		
+                  isPlay = true; 
+               }
+	    		
 			
 			
 

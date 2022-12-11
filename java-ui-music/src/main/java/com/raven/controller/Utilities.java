@@ -30,7 +30,13 @@ public class Utilities {
     private static String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCgFGVfrY4jQSoZQWWygZ83roKXWD4YeT2x2p41dGkPixe73rT2IW04glagN2vgoZoHuOPqa5and6kAmK2ujmCHu6D1auJhE2tXP+yLkpSiYMQucDKmCsWMnW9XlC5K7OSL77TXXcfvTvyZcjObEz6LIBRzs6+FqpFbUO9SJEfh6wIDAQAB";
     private static RSA rsa;
     private static AES aes;
-    private static Socket socket = null;
+    public static String getPublicKey() {
+		return publicKey;
+	}
+	public static void setPublicKey(String publicKey) {
+		Utilities.publicKey = publicKey;
+	}
+	private static Socket socket = null;
     private static SecretKey secretKey;
     
     public static Socket ConnectServer(String host, int port) {
@@ -62,7 +68,7 @@ public class Utilities {
 		Utilities.socket = socket;
 	}
 	public static SecretKey getSecretKey() {
-		return secretKey;
+		return Utilities.secretKey;
 	}
 	public static void setSecretKey(SecretKey secretKey) {
 		Utilities.secretKey = secretKey;
@@ -92,7 +98,7 @@ public class Utilities {
 		Utilities.rsa = rsa;
 	}
 	public static AES getAes() {
-		return aes;
+		return Utilities.aes;
 	}
 	public static void setAes(AES aes) {
 		Utilities.aes = aes;

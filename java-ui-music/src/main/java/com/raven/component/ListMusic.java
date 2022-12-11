@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 
 public class ListMusic<E extends Object> extends JList<E> {
 	private ArrayList<Song> songs = new ArrayList<>();
-    private  DefaultListModel model;
+    private static  DefaultListModel model;
     private int playIndex = -1;
     public Socket socket;
     public ListMusic() {
@@ -50,7 +50,7 @@ public class ListMusic<E extends Object> extends JList<E> {
 	public void setSongs(ArrayList<Song> songs) {
 		this.songs = songs;
 	}
-
+	public static int currentIndex = 0;
 	@Override
     public ListCellRenderer getCellRenderer() {
         return new DefaultListCellRenderer() {
@@ -65,6 +65,7 @@ public class ListMusic<E extends Object> extends JList<E> {
                 ItemMusic item = new ItemMusic(data);
                 ArrayList<Song> songss = getSongs();
                 if(selected) {
+                	currentIndex = index;
                 	 Bottom.playMusic(songss.get(index));
                 }
               

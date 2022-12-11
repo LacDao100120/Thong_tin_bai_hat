@@ -24,6 +24,7 @@ public class Main extends javax.swing.JFrame {
      Form_Artists artists = new Form_Artists();
      SearchArtist search = new SearchArtist();
     public Main() {
+    	controller.setKey();
         initComponents();
         init();
         artists.setSongs(controller.getInfo("newRelease"));

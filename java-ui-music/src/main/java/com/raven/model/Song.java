@@ -12,11 +12,18 @@ public class Song {
 	private ArrayList<Artist> artists;
 	private String link;
 	private String Description;
+	private Artist composer;
 	public Song() {
 		
 	}
 	public String getLink() {
 		return link;
+	}
+	public Artist getComposer() {
+		return composer;
+	}
+	public void setComposer(Artist composer) {
+		this.composer = composer;
 	}
 	public void setLink(String link) {
 		this.link = link;

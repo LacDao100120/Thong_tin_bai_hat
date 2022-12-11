@@ -36,6 +36,38 @@
     <artifactId>jlayer</artifactId>
     <version>1.0.1</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/uk.co.caprica/vlcj -->
+<dependency>
+    <groupId>uk.co.caprica</groupId>
+    <artifactId>vlcj</artifactId>
+    <version>4.8.2</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx</artifactId>
+    <version>11</version>
+    <type>pom</type>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-swing</artifactId>
+    <version>11</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-media</artifactId>
+    <version>11</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-base</artifactId>
+    <version>11</version>
+</dependency>
 
     </dependencies>
 </project>
